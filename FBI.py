@@ -12,8 +12,9 @@ in a 15x12 grid of length 6.
 import re, random
 
 orientations = ['up', 'down', 'left', 'right']
+bones = [] #locations to store for the buried bones
 
-#create the 15x12 matrix
+#create the 15x12 matrix for the yard with all the bones to display
 yard = [
 ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
 ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
@@ -31,9 +32,7 @@ yard = [
 
 #define the functions
 
-#show the yard
 def getOrientation():
-    #return orientations[random.randint(0,3)]
     return orientations[random.randint(0,3)]
 
 def placeBone():
@@ -63,7 +62,7 @@ def placeBone():
             yard[y + i][x] = "B"
 
 
-def showYard():
+def showYard(yardType=yard, bone=None):
     top = ""
     sideNum = 0
     #create the x axis numbers
@@ -73,11 +72,13 @@ def showYard():
         if i > 9:
             top += str(i) + " "  #create two spaces between single digits
     print(top)
+
     #create the rows of dots and stick the y axis numbers on the ends of them
-    for row in yard:
+    for row in yardType:
         print("  ".join(row) + "  " + str(sideNum))
         sideNum += 1
-
+    if yardType != yard:
+        originalYard = [[0 for x in range(15)] for x in range(12)]
 
 #MAIN
 print("""Welcome to Sherlock Holmes' and Toby's Fast Bone Investigation (FBI) app.
@@ -86,6 +87,9 @@ These "buried bone" patterns can be used to play the Fast Bone Investigation (FB
 Here is the backyard with 0 bones buried.""")
 
 showYard()
+for i in range(8):
+    placeBone()
+
 
 #get the valid input with guardian code
 running = True
@@ -105,9 +109,10 @@ Enter -1 to quit or 0 to display all bones at once: """)
     else:
         choice = int(choice)
         #good to go
+
         if choice == 1:
-            placeBone()
+            pass
         elif choice == 2:
-            placeBone()
+            pass
         elif choice == 0:
-             showYard()
+            showYard()
