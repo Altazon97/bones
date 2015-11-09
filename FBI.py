@@ -38,20 +38,19 @@ def placeBone():
             yard[y][x - i] = "B"
         return [y, x, 'left']
     elif getOrientation() == 'up':
-        y = random.randint(5,11) #bones of length 6 overflow if placed less than 5
+        y = random.randint(6,11) #bones of length 6 overflow if placed less than 5
         x = random.randint(0,14)
         yard[y][x] = "B"
         for i in range(6, 0, -1):
             yard[y - i][x] = "B"
         return [y, x, 'up']
     elif getOrientation() == 'down':
-        y = random.randint(0,6) #bones of length 6 overflow if placed greater than 6
+        y = random.randint(0,5) #bones of length 6 overflow if placed greater than 6
         x = random.randint(0,14)
         yard[y][x] = "B"
         for i in range(6):
             yard[y + i][x] = "B"
         return [y, x, 'down']
-
 
 def showYard():
     top = ""
