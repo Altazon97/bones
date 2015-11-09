@@ -115,7 +115,8 @@ showYard()
 #bury each bone and remember where it is by appending y and x coordinates and direction in a list
 for i in range(8):
     bones.append(placeBone())
-    print ("Placed bone")
+while None in bones:
+    bones[bones.index(None)] = placeBone()
 
 #get the valid input with guardian code
 running = True
@@ -126,6 +127,8 @@ Enter -1 to quit or 0 to display all bones at once: """)
 
     if len(choice) == 0:
         print("***You have not entered anything. You need to enter a valid number!")
+    elif re.match("^\d+?\.\d+?$", choice) is not None:
+        print("***You have entered " + str(choice) + ".  That doesn't make sense.  Please enter an integer.")
     elif len(re.findall("[A-Z]", choice)) >= 1 or len(re.findall("[a-z]", choice)) >= 1:
         print("***You have entered " + str(choice) + ".  You need to enter a valid number!")
     elif int(choice) < -1 or int(choice) > 8:
@@ -140,5 +143,17 @@ Enter -1 to quit or 0 to display all bones at once: """)
             showBone(1)
         elif choice == 2:
             showBone(2)
+        elif choice == 3:
+            showBone(3)
+        elif choice == 4:
+            showBone(4)
+        elif choice == 5:
+            showBone(5)
+        elif choice == 6:
+            showBone(6)
+        elif choice == 7:
+            showBone(7)
+        elif choice == 8:
+            showBone(8)
         elif choice == 0:
             showYard()
