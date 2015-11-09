@@ -34,14 +34,14 @@ def placeBone():
         y = random.randint(0,11)
         x = random.randint(5,14) #bones of length 6 overflow if placed less than 5
         yard[y][x] = "B"
-        for i in range(5, 0, -1):
+        for i in range(6, 0, -1):
             yard[y][x - i] = "B"
         return [y, x, 'left']
     elif getOrientation() == 'up':
         y = random.randint(5,11) #bones of length 6 overflow if placed less than 5
         x = random.randint(0,14)
         yard[y][x] = "B"
-        for i in range(5, 0, -1):
+        for i in range(6, 0, -1):
             yard[y - i][x] = "B"
         return [y, x, 'up']
     elif getOrientation() == 'down':
@@ -73,22 +73,35 @@ def showBone(boneNumber):
     yardToShowBoneIn = [["." for x in range(15)] for x in range(12)]
     if bones[boneNumber-1][2] == 'right':
         for i in range(6):
-            #yardToShowBoneIn[index of y][index of x]
-            #index of y = bones[boneNumber-1][0]
-            #index of x = bones[boneNumber-1][1]
             yardToShowBoneIn[bones[(boneNumber-1)][0]][bones[(boneNumber-1)][1] + i] = "B"
 
-            #display the bone
-            for i in range(15):
-                if i <= 9:
-                    top += str(i) + "  " #create one space between double digits
-                if i > 9:
-                    top += str(i) + " "  #create two spaces between single digits
-            print(top)
-            for row in yardToShowBoneIn:
-                print("  ".join(row) + "  " + str(sideNum))
-                sideNum += 1
+    elif bones[boneNumber-1][2] == 'left':
+        yardToShowBoneIn = [["." for x in range(15)] for x in range(12)]
+        for i in range(6, 0, -1):
+            yardToShowBoneIn[bones[(boneNumber-1)][0]][bones[(boneNumber-1)][1] - i] = "B"
 
+    elif bones[boneNumber-1][2] == 'up':
+        yardToShowBoneIn = [["." for x in range(15)] for x in range(12)]
+        for i in range(6, 0, -1):
+            yardToShowBoneIn[bones[(boneNumber-1)][0] - i][bones[(boneNumber-1)][1]] = "B"
+
+    elif bones[boneNumber-1][2] == 'down':
+        yardToShowBoneIn = [["." for x in range(15)] for x in range(12)]
+        for i in range(6):
+            yardToShowBoneIn[bones[(boneNumber-1)][0] + i][bones[(boneNumber-1)][1]] = "B"
+
+    #now, display the correct bone
+    top = ""
+    sideNum = 0
+    for i in range(15):
+        if i <= 9:
+            top += str(i) + "  " #create one space between double digits
+        if i > 9:
+            top += str(i) + " "  #create two spaces between single digits
+    print(top)
+    for row in yardToShowBoneIn:
+        print("  ".join(row) + "  " + str(sideNum))
+        sideNum += 1
 
 
 #MAIN
@@ -102,7 +115,7 @@ showYard()
 #bury each bone and remember where it is by appending y and x coordinates and direction in a list
 for i in range(8):
     bones.append(placeBone())
-
+    print ("Placed bone")
 
 #get the valid input with guardian code
 running = True
@@ -124,16 +137,8 @@ Enter -1 to quit or 0 to display all bones at once: """)
         #good to go
 
         if choice == 1:
-            pass
+            showBone(1)
         elif choice == 2:
-            pass
+            showBone(2)
         elif choice == 0:
             showYard()
-
-
-"""
-1.  finish off doing placeBone() for the remaining three directins
-2.  Remember the original position of the randomly placed bones at the beginning
-    so when it's called again by the user after they display a bone, it's not
-    random again like in the beginning.
-"""
