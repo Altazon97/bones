@@ -1,74 +1,93 @@
 """
 FBI.py
 
-Eric Sund
+Eric P. Sund
 November 4, 2015
 
-This program figures out where Sherlock Holmes could bury 8 bones for his dog
-in a 15x12 grid of length 6.
+This program figures out where Sherlock Holmes can bury 8 bones of length 6 for
+his dog in a 15x12 grid.  Bones can face either vertical or horizontal.  The way
+bones are represented on the grid is by changing a "." to a "B" with for loops,
+so by sequentially replacing these characters bones can be "drawn" four different
+ways.
 """
 
 #import modules
 import re, random
 
-orientations = ['up', 'down', 'left', 'right']
-bones = [] #locations to store for the buried bones
+#define all the instance variables
+orientations = ['up', 'down', 'left', 'right'] #possible directions to "draw" bones
+bones = [] #2D list to store locations of the bones
+yardWithAllBones = [["." for x in range(15)] for x in range(12)] #create matrix for the yard
 
-#create the 15x12 matrix for the yard with all the bones to display
-yard = [["." for x in range(15)] for x in range(12)]
-
-#define the functions
-
+#define all the functions
 def getOrientation():
+    #Randomly picks and returns a direction for a bone to start being be drawn in
     return orientations[random.randint(0,3)]
 
 def placeBone():
+    """
+    This function makes use of getOrientation() to decide on a direction for a
+    bone to be.  Once known, placeBone() begins sequentially replacing periods
+    with Bs to place a bone in the yard for Toby.  x and y coordinate restrictions
+    are considered before placing the bone to avoid overflowing out of the yard.
+    """
     if getOrientation() == 'right':
         y = random.randint(0,11)
         x = random.randint(0,8) #bones of length 6 overflow if placed greater than 8
-        yard[y][x] = "B"
         for i in range(6):
-            yard[y][x + i] = "B"
+            yardWithAllBones[y][x + i] = "B"
         return [y, x, 'right']
     elif getOrientation() == 'left':
         y = random.randint(0,11)
         x = random.randint(5,14) #bones of length 6 overflow if placed less than 5
-        yard[y][x] = "B"
         for i in range(6, 0, -1):
-            yard[y][x - i] = "B"
+            yardWithAllBones[y][x - i] = "B"
         return [y, x, 'left']
     elif getOrientation() == 'up':
         y = random.randint(6,11) #bones of length 6 overflow if placed less than 5
         x = random.randint(0,14)
-        yard[y][x] = "B"
         for i in range(6, 0, -1):
-            yard[y - i][x] = "B"
+            yardWithAllBones[y - i][x] = "B"
         return [y, x, 'up']
     elif getOrientation() == 'down':
         y = random.randint(0,5) #bones of length 6 overflow if placed greater than 6
         x = random.randint(0,14)
-        yard[y][x] = "B"
         for i in range(6):
-            yard[y + i][x] = "B"
+            yardWithAllBones[y + i][x] = "B"
         return [y, x, 'down']
 
-def showYard():
-    top = ""
-    sideNum = 0
+def showYard(desiredYard):
+    """
+    This function shows either the entire yard with all the locations of the buried bones
+    which are randomly determined, or shows the yard with one soecified bone by changing
+    the desiredYard parameter.
+    """
+    top = "" #x axis numbers
+    sideNum = 0 #y axis numbers
     #create the x axis numbers
     for i in range(15):
         if i <= 9:
-            top += str(i) + "  " #create one space between double digits
+            top += str(i) + "  " #add one space between double digits
         if i > 9:
-            top += str(i) + " "  #create two spaces between single digits
+            top += str(i) + " "  #add two spaces between single digits
     print(top)
-
     #create the rows of dots and stick the y axis numbers on the ends of them
-    for row in yard:
+    for row in desiredYard:
         print("  ".join(row) + "  " + str(sideNum))
         sideNum += 1
 
 def showBone(boneNumber):
+    """
+    showBone() displayes the location of a single bone which the user defines.
+    The way this function works is it temporarily creates another matrix and
+    draws the specified bone on to it.  When the function is called again,
+    the matrix with the previous bone is overwritten to a blank one in order
+    to draw the single new bone.  The first dimension of the 'bones' matrix is
+    which bone the user wants, and the second dimension includes the x coordinate,
+    y, coordinate, and direction.  This information is put into yardToShowBoneIn.
+    """
+
+    #draw the bones
     yardToShowBoneIn = [["." for x in range(15)] for x in range(12)]
     if bones[boneNumber-1][2] == 'right':
         for i in range(6):
@@ -89,18 +108,7 @@ def showBone(boneNumber):
         for i in range(6):
             yardToShowBoneIn[bones[(boneNumber-1)][0] + i][bones[(boneNumber-1)][1]] = "B"
 
-    #now, display the correct bone
-    top = ""
-    sideNum = 0
-    for i in range(15):
-        if i <= 9:
-            top += str(i) + "  " #create one space between double digits
-        if i > 9:
-            top += str(i) + " "  #create two spaces between single digits
-    print(top)
-    for row in yardToShowBoneIn:
-        print("  ".join(row) + "  " + str(sideNum))
-        sideNum += 1
+    showYard(yardToShowBoneIn)
 
 
 #MAIN
@@ -109,9 +117,9 @@ This app shows possible patterns in which bones can be buried in Mrs. Hudson's b
 These "buried bone" patterns can be used to play the Fast Bone Investigation (FBI) game.\n\n
 Here is the backyard with 0 bones buried.""")
 
-#show blank yard
-showYard()
-#bury each bone and remember where it is by appending y and x coordinates and direction in a list
+#show a blank yard when the program starts
+showYard(yardWithAllBones)
+#bury each bone and remember where it is by appending y and x coordinates and direction to a list
 for i in range(8):
     bones.append(placeBone())
 while None in bones:
@@ -137,7 +145,7 @@ Enter -1 to quit or 0 to display all bones at once: """)
         print("***You have entered " + str(choice) + " which is not in the desired range. You need to enter a valid number!")
     else:
         choice = int(choice)
-        #good to go
+        #good to go!
         if choice == 1:
             showBone(1)
         elif choice == 2:
@@ -155,4 +163,4 @@ Enter -1 to quit or 0 to display all bones at once: """)
         elif choice == 8:
             showBone(8)
         elif choice == 0:
-            showYard()
+            showYard(yardWithAllBones)
