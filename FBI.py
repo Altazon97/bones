@@ -130,14 +130,14 @@ Enter -1 to quit or 0 to display all bones at once: """)
         print("***You have entered " + str(choice) + ".  That doesn't make sense.  Please enter an integer.")
     elif len(re.findall("[A-Z]", choice)) >= 1 or len(re.findall("[a-z]", choice)) >= 1:
         print("***You have entered " + str(choice) + ".  You need to enter a valid number!")
+    elif int(choice) == -1:
+        print("\n-------")
+        running = False
     elif int(choice) < -1 or int(choice) > 8:
         print("***You have entered " + str(choice) + " which is not in the desired range. You need to enter a valid number!")
-    elif int(choice) == -1:
-        gettingInput = False
     else:
         choice = int(choice)
         #good to go
-
         if choice == 1:
             showBone(1)
         elif choice == 2:
