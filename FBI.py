@@ -21,7 +21,8 @@ yardWithAllBones = [["." for x in range(15)] for x in range(12)] #create matrix 
 
 #define all the functions
 def YardWithOneBoneMsg(howMany):
-    #prints message saying this is the yard with one bone
+    """prints message saying this is the yard with one bone
+    """
     if howMany == "8":
         print("\nHere is the backyard with " + howMany + " bones buried: ")
     if howMany == "1":
