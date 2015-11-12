@@ -20,16 +20,9 @@ bones = [] #2D list to store locations of the bones
 yardWithAllBones = [["." for x in range(15)] for x in range(12)] #create matrix for the yard
 
 #define all the functions
-def YardWithOneBoneMsg(howMany):
-    """prints message saying this is the yard with one bone
-    """
-    if howMany == "8":
-        print("\nHere is the backyard with " + howMany + " bones buried: ")
-    if howMany == "1":
-        print("\nHere is the backyard with " + howMany + " bone buried: ")
-
 def getOrientation():
-    #Randomly picks and returns a direction for a bone to start being be drawn in
+    """Randomly picks and returns a direction for a bone to start being be drawn in
+    """
     return orientations[random.randint(0,3)]
 
 def placeBone():
@@ -116,6 +109,7 @@ def showBone(boneNumber):
         for i in range(6):
             yardToShowBoneIn[bones[(boneNumber-1)][0] + i][bones[(boneNumber-1)][1]] = "B"
 
+    print("\nHere is the backyard with 1 bone buried: ")
     showYard(yardToShowBoneIn)
 
 
@@ -155,29 +149,21 @@ Enter -1 to quit or 0 to display all bones at once: """)
         choice = int(choice)
         #good to go!
         if choice == 1:
-            YardWithOneBoneMsg("1")
             showBone(1)
         elif choice == 2:
-            YardWithOneBoneMsg("1")
             showBone(2)
         elif choice == 3:
-            YardWithOneBoneMsg("1")
             showBone(3)
         elif choice == 4:
-            YardWithOneBoneMsg("1")
             showBone(4)
         elif choice == 5:
-            YardWithOneBoneMsg("1")
             showBone(5)
         elif choice == 6:
-            YardWithOneBoneMsg("1")
             showBone(6)
         elif choice == 7:
-            YardWithOneBoneMsg("1")
             showBone(7)
         elif choice == 8:
-            YardWithOneBoneMsg("1")
             showBone(8)
         elif choice == 0:
-            YardWithOneBoneMsg("8")
+            print("\nHere is the backyard with 8 bones buried: ")
             showYard(yardWithAllBones)
